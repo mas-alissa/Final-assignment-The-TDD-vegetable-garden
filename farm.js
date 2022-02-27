@@ -8,11 +8,14 @@ const getYieldForCrop = (input) => {
 
 
 const getTotalYield = ({ crops }) => {
-    const multiplicationProcess = crops.map(item => item.crop.yield * item.numCrops)
-
-    const additionProcess = multiplicationProcess.reduce((acc,item) => acc + item,0)
+    const multiplicationProcess = crops.map(item => item.crop.yield * item.numCrops);
+    const additionProcess = multiplicationProcess.reduce((acc, item) => acc + item, 0);
     return additionProcess;
 }
 
 
-module.exports = {getYieldForPlant,getYieldForCrop,getTotalYield};
+const getCostsForCrop = (input) => {
+    return input.crop.cost * input.numCrops;
+}
+
+module.exports = { getYieldForPlant, getYieldForCrop, getTotalYield,getCostsForCrop };
