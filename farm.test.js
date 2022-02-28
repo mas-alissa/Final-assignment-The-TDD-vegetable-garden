@@ -205,14 +205,14 @@ describe("getRevenueForCrop", () => {
         }
 
         const environmentFactors = {
-            sun: "low",
+            sun: "high",
         };
 
         const input = {
             crop: corn,
             numCrops: 10,
         };
-        expect(getRevenueForCrop(input, environmentFactors)).toBe(1200)
+        expect(getRevenueForCrop(input, environmentFactors)).toBe(3600)
     });
 
 })
@@ -258,29 +258,73 @@ describe("getProfitForCrop", () => {
             numCrops: 10,
         };
 
-        expect(getProfitForCrop(input,environmentFactors)).toBe(730);
+        expect(getProfitForCrop(input,environmentFactors)).toBe(2230);
     })
 })
+
+// describe("getTotalProfit", () => {
+//     const corn = {
+//         name: "corn",
+//         yield: 3,
+//         cost: 2,
+//         salePrice: 5,
+//     };
+//     const pumpkin = {
+//         name: "pumpkin",
+//         yield: 4,
+//         cost: 3,
+//         salePrice: 6,
+//     };
+//     const crops = [
+//         { crop: corn, numCrops: 5 },//65
+//         { crop: pumpkin, numCrops: 2 },//42
+//     ];
+//     test("calculate the profit for multiple crops", () => {
+//         expect(getTotalProfit({ crops })).toBe(107);
+
+//     })
+
+// });
 
 describe("getTotalProfit", () => {
     const corn = {
         name: "corn",
-        yield: 3,
-        cost: 2,
-        salePrice: 5,
+        yield: 30, // <-- 3 kilogram -->
+        cost: 2, // 2 euro per plant 
+        salePrice: 5, // 5 euro sale price voor 1 kg
+        factor: {
+            sun: {
+                low: -50,
+                medium: 0,
+                high: 50,
+            },
+        }
     };
+
+    
     const pumpkin = {
         name: "pumpkin",
         yield: 4,
         cost: 3,
         salePrice: 6,
+        factor: {
+            sun: {
+                low: -50,
+                medium: 0,
+                high: 50,
+            },
+        }
+    };
+
+    const environmentFactors = {
+        sun: "medium",
     };
     const crops = [
-        { crop: corn, numCrops: 5 },//65
-        { crop: pumpkin, numCrops: 2 },//42
+        { crop: corn, numCrops: 5 },
+        { crop: pumpkin, numCrops: 2 },
     ];
-    test("calculate the profit for multiple crops", () => {
-        expect(getTotalProfit({ crops })).toBe(107);
+    test("calculate the profit for multiple crops with environment factors", () => {
+        expect(getTotalProfit(environmentFactors,{ crops })).toBe(782);
 
     })
 

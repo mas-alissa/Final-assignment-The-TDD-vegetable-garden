@@ -39,11 +39,11 @@ const getTotalYield = (environmentFactors,{ crops }) => {
     const multiplicationProcess = crops.map(item => {
         const environmentFactor = environmentFactors.sun;
         if(environmentFactor === "low"){
-            return (item.crop.yield * 50 / 100) * item.numCrops
+            return (item.crop.yield * -item.crop.factor.sun.low / 100) * item.numCrops
         } else if(environmentFactor === "medium"){
             return (item.crop.yield * 100 / 100) * item.numCrops
         } else if(environmentFactor === "high"){
-            return (item.crop.yield * 150 / 100) * item.numCrops
+            return (item.crop.yield * (100 + item.crop.factor.sun.high) / 100) * item.numCrops
 
         }
     });
@@ -65,11 +65,11 @@ const getCostsForCrop = (input) => {
 const getRevenueForCrop = (input,environmentFactors) => {
     const environmentFactor = environmentFactors.sun;
     if(environmentFactor === "low"){
-        return (input.crop.yield * 50 / 100) * input.crop.salePrice * input.numCrops;
+        return (input.crop.yield * -input.crop.factor.sun.low / 100) * input.crop.salePrice * input.numCrops;
     } else if(environmentFactor === "medium"){
         return (input.crop.yield * 100 / 100) * input.crop.salePrice * input.numCrops;
     } else if(environmentFactor === "high"){
-        return (input.crop.yield * 150 / 100) * input.crop.salePrice * input.numCrops;
+        return (input.crop.yield * (100 + input.crop.factor.sun.high) / 100) * input.crop.salePrice * input.numCrops;
     }
 }
 
@@ -80,16 +80,31 @@ const getRevenueForCrop = (input,environmentFactors) => {
 const getProfitForCrop = (input,environmentFactors) => {
     const environmentFactor = environmentFactors.sun;
     if(environmentFactor === "low"){
-        return ((input.crop.yield * 50 / 100) * input.numCrops * input.crop.salePrice) - input.crop.cost * input.numCrops;
+        return ((input.crop.yield * -input.crop.factor.sun.low / 100) * input.numCrops * input.crop.salePrice) - input.crop.cost * input.numCrops;
     } else if(environmentFactor === "medium"){
-        return ((input.crop.yield * 100 / 100) * input.numCrops * input.crop.salePrice) - (input.crop.cost * input.numCrops);
+        return ((input.crop.yield * 100 / 100) * input.numCrops * input.crop.salePrice) - input.crop.cost * input.numCrops;
     }else if(environmentFactor === "high"){
-        return ((input.crop.yield * 150 / 100) * input.numCrops * input.crop.salePrice) - (input.crop.cost * input.numCrops);
+        return ((input.crop.yield * (100 + input.crop.factor.sun.high) / 100) * input.numCrops * input.crop.salePrice) - input.crop.cost * input.numCrops;
     }
 }
 
-const getTotalProfit = ({crops}) => {
-    const arrayProfitPerplant = crops.map(item => (item.crop.salePrice * item.crop.yield * item.numCrops) - (item.crop.cost * item.numCrops)) //[ 65 , 42 ]
+// const getTotalProfit = ({crops}) => {
+//     const arrayProfitPerplant = crops.map(item => (item.crop.salePrice * item.crop.yield * item.numCrops) - (item.crop.cost * item.numCrops)) //[ 65 , 42 ]
+//     const totalProfit = arrayProfitPerplant.reduce((acc,elem) => acc + elem,0)
+//     return totalProfit;
+//     }
+
+const getTotalProfit = (environmentFactors,{crops}) => {
+    const arrayProfitPerplant = crops.map(item => {
+        const environmentFactor = environmentFactors.sun;
+        if(environmentFactor === "low"){
+            return ((item.crop.yield * (-item.crop.factor.sun.low / 100)) * item.numCrops * item.crop.salePrice) - (item.crop.cost * item.numCrops);
+        } else if(environmentFactor === "medium"){
+            return ((item.crop.yield * (100 / 100)) * item.numCrops * item.crop.salePrice) - (item.crop.cost * item.numCrops);
+        }else if(environmentFactor === "high"){
+            return ((item.crop.yield * ((100 + item.crop.factor.sun.high) / 100)) * item.numCrops * item.crop.salePrice) - (item.crop.cost * item.numCrops);
+        }
+    }) 
     const totalProfit = arrayProfitPerplant.reduce((acc,elem) => acc + elem,0)
     return totalProfit;
     }
