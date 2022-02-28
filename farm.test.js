@@ -190,7 +190,7 @@ describe("getTotalYield", () => {
 // });
 
 describe("getRevenueForCrop", () => {
-    test("calculate the revenue for a crop", () => {
+    test("calculate the revenue for a crop with environment factors", () => {
         const corn = {
             name: "corn",
             yield: 30, //kg
@@ -205,6 +205,51 @@ describe("getRevenueForCrop", () => {
         }
 
         const environmentFactors = {
+            sun: "low",
+        };
+
+        const input = {
+            crop: corn,
+            numCrops: 10,
+        };
+        expect(getRevenueForCrop(input, environmentFactors)).toBe(1200)
+    });
+
+})
+
+// describe("getProfitForCrop", () => {
+//     test("calculate the profit for a crop ", () => {
+//         const corn = {
+//             name: "corn",
+//             yield: 3, // <-- 3 kilogram -->
+//             cost: 2, // 2 euro per plant 
+//             salePrice: 5, // 5 euro sale price voor 1 kg
+//         };
+//         const input = {
+//             crop: corn,
+//             numCrops: 10,
+//         };
+
+//         expect(getProfitForCrop(input)).toBe(130); // (5*3*10) - (2*10) = 130
+//     })
+// })
+describe("getProfitForCrop", () => {
+    test("calculate the profit for a crop with environment factors ", () => {
+        const corn = {
+            name: "corn",
+            yield: 30, // <-- 3 kilogram -->
+            cost: 2, // 2 euro per plant 
+            salePrice: 5, // 5 euro sale price voor 1 kg
+            factor: {
+                sun: {
+                    low: -50,
+                    medium: 0,
+                    high: 50,
+                },
+            }
+        };
+
+        const environmentFactors = {
             sun: "high",
         };
 
@@ -212,25 +257,8 @@ describe("getRevenueForCrop", () => {
             crop: corn,
             numCrops: 10,
         };
-        expect(getRevenueForCrop(input, environmentFactors)).toBe(360)
-    });
 
-})
-
-describe("getProfitForCrop", () => {
-    test("calculate the profit for a crop", () => {
-        const corn = {
-            name: "corn",
-            yield: 3, // <-- 3 kilogram -->
-            cost: 2, // 2 euro per plant 
-            salePrice: 5, // 5 euro sale price voor 1 kg
-        };
-        const input = {
-            crop: corn,
-            numCrops: 10,
-        };
-
-        expect(getProfitForCrop(input)).toBe(130); // (5*3*10) - (2*10) = 130
+        expect(getProfitForCrop(input,environmentFactors)).toBe(730);
     })
 })
 
