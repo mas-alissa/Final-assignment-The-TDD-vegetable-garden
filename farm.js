@@ -1,5 +1,16 @@
-const getYieldForPlant = (corn) => {
-    return corn.yield;
+// const getYieldForPlant = (corn) => {
+//     return corn.yield;
+// }
+
+const getYieldForPlant = (corn,environmentFactors) => {
+    const environmentFactor = environmentFactors.sun;
+    if(environmentFactor === "low"){
+       return corn.yield * 50 / 100;
+    } else if(environmentFactor === "medium"){
+    return corn.yield * 100 / 100;
+     } else if(environmentFactor === "high"){
+return corn.yield * 150 / 100;
+}
 }
 
 const getYieldForCrop = (input) => {
