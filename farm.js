@@ -13,8 +13,19 @@ return corn.yield * 150 / 100;
 }
 }
 
-const getYieldForCrop = (input) => {
-    return input.crop.yield * input.numCrops;
+// const getYieldForCrop = (input) => {
+//     return input.crop.yield * input.numCrops;
+// }
+
+const getYieldForCrop = (input,environmentFactors) => {
+    const environmentFactor = environmentFactors.sun;
+    if(environmentFactor === "low"){
+        return (input.crop.yield * 50 / 100) * input.numCrops; //OF --> input.crop.yield * (-input.crop.factor.sun.low) / 100
+    } else if (environmentFactor === "medium"){
+        return input.crop.yield * input.numCrops;// OF --> (input.crop.yield * 100 / 100) * input.numCrops
+    } else if(environmentFactor === "high"){
+        return input.crop.yield * (150 / 100) * input.numCrops;
+    }
 }
 
 
