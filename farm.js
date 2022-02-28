@@ -58,8 +58,19 @@ const getCostsForCrop = (input) => {
 }
 
 
-const getRevenueForCrop = (input) => {
-    return input.crop.yield * input.crop.salePrice * input.numCrops
+// const getRevenueForCrop = (input) => {
+//     return input.crop.yield * input.crop.salePrice * input.numCrops
+// }
+
+const getRevenueForCrop = (input,environmentFactors) => {
+    const environmentFactor = environmentFactors.sun;
+    if(environmentFactor === "low"){
+        return (input.crop.yield * 50 / 100) * input.crop.salePrice;
+    } else if(environmentFactor === "medium"){
+        return (input.crop.yield * 100 / 100) * input.crop.salePrice;
+    } else if(environmentFactor === "high"){
+        return (input.crop.yield * 150 / 100) * input.crop.salePrice;
+    }
 }
 
 const getProfitForCrop = (input) => {
