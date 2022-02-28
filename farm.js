@@ -20,17 +20,34 @@ return corn.yield * 150 / 100;
 const getYieldForCrop = (input,environmentFactors) => {
     const environmentFactor = environmentFactors.sun;
     if(environmentFactor === "low"){
-        return (input.crop.yield * 50 / 100) * input.numCrops; //OF --> input.crop.yield * (-input.crop.factor.sun.low) / 100
+        return (input.crop.yield * 50 / 100) * input.numCrops; //OF --> input.crop.yield * (-input.crop.factor.sun.low) / 100;
     } else if (environmentFactor === "medium"){
-        return input.crop.yield * input.numCrops;// OF --> (input.crop.yield * 100 / 100) * input.numCrops
+        return input.crop.yield * input.numCrops;// OF --> (input.crop.yield * 100 / 100) * input.numCrops;
     } else if(environmentFactor === "high"){
         return input.crop.yield * (150 / 100) * input.numCrops;
     }
 }
 
 
-const getTotalYield = ({ crops }) => {
-    const multiplicationProcess = crops.map(item => item.crop.yield * item.numCrops);
+// const getTotalYield = ({ crops }) => {
+//     const multiplicationProcess = crops.map(item => item.crop.yield * item.numCrops);
+//     const additionProcess = multiplicationProcess.reduce((acc, item) => acc + item, 0);
+//     return additionProcess;
+// }
+
+const getTotalYield = (environmentFactors,{ crops }) => {
+    const multiplicationProcess = crops.map(item => {
+        const environmentFactor = environmentFactors.sun;
+        if(environmentFactor === "low"){
+            return (item.crop.yield * 50 / 100) * item.numCrops
+        } else if(environmentFactor === "medium"){
+            return (item.crop.yield * 100 / 100) * item.numCrops
+        } else if(environmentFactor === "high"){
+            return (item.crop.yield * 150 / 100) * item.numCrops
+
+        }
+    });
+    console.log(multiplicationProcess);
     const additionProcess = multiplicationProcess.reduce((acc, item) => acc + item, 0);
     return additionProcess;
 }
